@@ -1,0 +1,1 @@
+dotnet ef migrations remove --project "DelTeaching.Infra.Data" -s "DelTeaching.API" -c ApplicationDbContext

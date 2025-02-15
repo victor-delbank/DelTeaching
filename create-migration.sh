@@ -1,0 +1,1 @@
+dotnet ef migrations add InitMigration --project "DelTeaching.Infra.Data" -s "DelTeaching.API" -c ApplicationDbContext 

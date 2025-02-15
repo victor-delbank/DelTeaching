@@ -1,0 +1,1 @@
+dotnet ef database update --project "DelTeaching.Infra.Data" -s "DelTeaching.API" -c ApplicationDbContext 
