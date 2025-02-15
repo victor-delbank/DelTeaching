@@ -30,8 +30,9 @@ public static class DependecyInjection
         service.AddSingleton(rabbitConfig);
 
         service.AddScoped<IMessageBus, MessageBus>();
+        service.AddScoped<ITransactionService, TransactionService>();
 
-        //service.AddScoped<ITService, TService>();
+        service.AddScoped<IBankAccountService, BankAccountService>();
 
         return service;
     }

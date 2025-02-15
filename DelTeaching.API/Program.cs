@@ -4,8 +4,7 @@ using DelTeaching.Infra.IoC;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddInfrastructure(builder.Configuration);
-// Apply migrations
-//builder.Services.ApplyPendingMigrations();
+builder.Services.ApplyPendingMigrations();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

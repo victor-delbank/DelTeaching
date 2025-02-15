@@ -1,4 +1,5 @@
 using AutoMapper;
+using DelTeaching.Domain.Entities;
 
 namespace DelTeaching.Application.Dtos.Mapping;
 
@@ -6,6 +7,8 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
-        //CreateMap<T, TDto>().ReverseMap();
+        CreateMap<BankAccount, BankAccountDto>().ReverseMap();
+        CreateMap<Balance, BalanceDto>().ReverseMap();
+        CreateMap<Transaction, TransactionDto>().ReverseMap();
     }
 }

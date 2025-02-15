@@ -8,6 +8,7 @@ public class UnitOfWork : IUnitOfWork
     private readonly ApplicationDbContext _context;
     private IBankAccountRepository _bankAccountRepository;
     private ITransactionRepository _transactionRepository;
+    private IBalanceRepository _balanceRepository;
     public UnitOfWork(ApplicationDbContext context)
     {
         _context = context;
@@ -29,6 +30,13 @@ public class UnitOfWork : IUnitOfWork
         }
     }
 
+    public IBalanceRepository BalanceRepository
+    {
+        get
+        {
+            return _balanceRepository ??= new BalanceRepository(_context);
+        }
+    }
     public async Task<bool> SaveChangesAsync()
     {
         return (await _context.SaveChangesAsync()) > 0;

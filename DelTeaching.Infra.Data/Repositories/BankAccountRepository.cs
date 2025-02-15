@@ -57,15 +57,23 @@ public class BankAccountRepository : GenericRepository<BankAccount>, IBankAccoun
         return new PageList<BankAccount>(items, totalCount, pageParams.PageNumber, pageParams.PageSize);
     }
 
+    public async Task<BankAccount> GetByHolderDocument(string holderDocument)
+    {
+        return await _context.BankAccounts
+                                .FirstOrDefaultAsync(b => b.HolderDocument == holderDocument);
+    }
+
     public async Task<BankAccount> GetById(long id)
     {
         return await _context.BankAccounts
+                                .Include(b => b.Balance)
                                 .FirstOrDefaultAsync(b => b.Id == id);
     }
 
     public async Task<BankAccount> GetByNumber(string number)
     {
         return await _context.BankAccounts
+                                .Include(b => b.Balance)
                                  .FirstOrDefaultAsync(b => b.Number == number);
     }
 }

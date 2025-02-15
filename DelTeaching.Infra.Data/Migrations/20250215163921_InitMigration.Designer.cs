@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DelTeaching.Infra.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250215141926_InitMigration")]
+    [Migration("20250215163921_InitMigration")]
     partial class InitMigration
     {
         /// <inheritdoc />
@@ -76,6 +76,10 @@ namespace DelTeaching.Infra.Data.Migrations
 
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("HolderDocument")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("HolderEmail")
                         .IsRequired()
@@ -166,8 +170,7 @@ namespace DelTeaching.Infra.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BankAccountId")
-                        .IsUnique();
+                    b.HasIndex("BankAccountId");
 
                     b.ToTable("Transactions");
                 });
@@ -186,8 +189,8 @@ namespace DelTeaching.Infra.Data.Migrations
             modelBuilder.Entity("DelTeaching.Domain.Entities.Transaction", b =>
                 {
                     b.HasOne("DelTeaching.Domain.Entities.BankAccount", "BankAccount")
-                        .WithOne("Transaction")
-                        .HasForeignKey("DelTeaching.Domain.Entities.Transaction", "BankAccountId")
+                        .WithMany("Transaction")
+                        .HasForeignKey("BankAccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -199,8 +202,7 @@ namespace DelTeaching.Infra.Data.Migrations
                     b.Navigation("Balance")
                         .IsRequired();
 
-                    b.Navigation("Transaction")
-                        .IsRequired();
+                    b.Navigation("Transaction");
                 });
 #pragma warning restore 612, 618
         }

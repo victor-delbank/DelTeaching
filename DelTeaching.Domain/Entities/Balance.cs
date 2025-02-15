@@ -22,21 +22,69 @@ public class Balance : BaseEntity
         BlockedAmount = blockedAmount;
     }
 
-    public void SetAvailableAmount(decimal availableAmount)
+    public Balance(
+        decimal availableAmount,
+        decimal blockedAmount
+    )
     {
-        if(availableAmount <= 0)
-        {
-            throw new DelTeachingException("O valor disponível não pode ser menor que 0", "INVALID_AVAILABLE_AMOUNT");
-        }
         AvailableAmount = availableAmount;
+        BlockedAmount = blockedAmount;
     }
 
-    public void SetBlockedAmount(decimal blockedAmount)
+    public void BlockAmount(decimal amount)
     {
-        if(blockedAmount <= 0)
+        if (amount <= 0)
         {
-            throw new DelTeachingException("O valor bloqueado não pode ser menor que 0", "INVALID_BLOCKED_AMOUNT");
+            throw new DelTeachingException("O valor a bloquear deve ser maior que 0", "INVALID_BLOCK_AMOUNT");
         }
-        BlockedAmount = blockedAmount;
+
+        if (amount > AvailableAmount)
+        {
+            throw new DelTeachingException("Saldo insuficiente para bloqueio", "INSUFFICIENT_FUNDS");
+        }
+
+        AvailableAmount -= amount;
+        BlockedAmount += amount;
+    }
+
+    public void UnblockAmount(decimal amount)
+    {
+        if (amount <= 0)
+        {
+            throw new DelTeachingException("O valor a desbloquear deve ser maior que 0", "INVALID_UNBLOCK_AMOUNT");
+        }
+
+        if (amount > BlockedAmount)
+        {
+            throw new DelTeachingException("Saldo bloqueado insuficiente para desbloqueio", "INSUFFICIENT_BLOCKED_FUNDS");
+        }
+
+        BlockedAmount -= amount;
+        AvailableAmount += amount;
+    }
+
+    public void AddAvailableAmount(decimal amount)
+    {
+        if (amount <= 0)
+        {
+            throw new DelTeachingException("O valor a adicionar deve ser maior que 0", "INVALID_ADD_AMOUNT");
+        }
+
+        AvailableAmount += amount;
+    }
+
+    public void RemoveAvailableAmount(decimal amount)
+    {
+        if (amount <= 0)
+        {
+            throw new DelTeachingException("O valor a remover deve ser maior que 0", "INVALID_REMOVE_AMOUNT");
+        }
+
+        if (amount > AvailableAmount)
+        {
+            throw new DelTeachingException("Saldo disponível insuficiente", "INSUFFICIENT_AVAILABLE_FUNDS");
+        }
+
+        AvailableAmount -= amount;
     }
 }

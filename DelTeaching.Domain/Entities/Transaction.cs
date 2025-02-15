@@ -10,7 +10,7 @@ public class Transaction : BaseEntity
     public BankAccount BankAccount { get; protected set; }
     public string CounterPartyBankCode { get; protected set; }
     public string CounterPartyBankName { get; protected set; }
-    public string CounterPartyBranch { get; protected set; }
+    public string CounterpartyBranch { get; protected set; }
     public string CounterPartyAccountNumber { get; protected set; }
     public string CounterPartyAccountType { get; protected set; }
     public string CounterPartyHolderName { get; protected set; }
@@ -37,7 +37,7 @@ public class Transaction : BaseEntity
         BankAccountId = bankAccountId;
         CounterPartyBankCode = counterPartyBankCode;
         CounterPartyBankName = counterPartyBankName;
-        CounterPartyBranch = counterPartyBranch;
+        CounterpartyBranch = counterPartyBranch;
         CounterPartyAccountNumber = counterPartyAccountNumber;
         CounterPartyAccountType = counterPartyAccountType;
         CounterPartyHolderName = counterPartyHolderName;

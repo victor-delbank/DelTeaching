@@ -23,6 +23,7 @@ namespace DelTeaching.Infra.Data.Migrations
                     Type = table.Column<int>(type: "integer", nullable: false),
                     HolderName = table.Column<string>(type: "text", nullable: false),
                     HolderEmail = table.Column<string>(type: "text", nullable: false),
+                    HolderDocument = table.Column<string>(type: "text", nullable: false),
                     HolderType = table.Column<int>(type: "integer", nullable: false),
                     Status = table.Column<int>(type: "integer", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -99,8 +100,7 @@ namespace DelTeaching.Infra.Data.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Transactions_BankAccountId",
                 table: "Transactions",
-                column: "BankAccountId",
-                unique: true);
+                column: "BankAccountId");
         }
 
         /// <inheritdoc />

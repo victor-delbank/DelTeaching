@@ -11,10 +11,11 @@ public class BankAccount : BaseEntity
     public EBankAccountType Type { get; protected set; }
     public string HolderName { get; protected set; }
     public string HolderEmail { get; protected set; }
+    public string HolderDocument { get; protected set; }
     public EBankAccountHolderType HolderType { get; protected set; }
     public EBankAccountStatus Status { get; protected set; }
     public Balance Balance { get; protected set; }
-    public Transaction Transaction { get; protected set; }
+    public IEnumerable<Transaction> Transaction { get; protected set; }
 
     protected BankAccount() { }
 
@@ -23,17 +24,20 @@ public class BankAccount : BaseEntity
         EBankAccountType type,
         string holderName,
         string holderEmail,
+        string holderDocument,
         EBankAccountHolderType holderType,
         EBankAccountStatus status
         )
     {
-        Branch = branch;
-        GenerateNumber();
+        SetBranch(branch);
+        Number = GenerateNumber();
         Type = type;
         HolderName = holderName;
         SetHolderEmail(holderEmail);
+        HolderDocument = holderDocument;
         HolderType = holderType;
         Status = status;
+        Balance = new Balance(0, 0);
     }
 
     public void SetHolderEmail(string holderEmail)
@@ -46,10 +50,8 @@ public class BankAccount : BaseEntity
         }
         HolderEmail = holderEmail;
     }
-
     private static readonly object _lock = new();
-    private static readonly HashSet<string> _numbers = [];
-
+    private static readonly HashSet<string> _numbers = new HashSet<string>();
     public static string GenerateNumber()
     {
         lock (_lock)
@@ -65,7 +67,6 @@ public class BankAccount : BaseEntity
             return number;
         }
     }
-
     public void SetAccountType(EBankAccountType type)
     {
         if (type == Type)
@@ -74,24 +75,25 @@ public class BankAccount : BaseEntity
         }
         Type = type;
     }
-
-    public void Finish()
+    public void SetStatus(EBankAccountStatus status)
     {
-        if (Status == EBankAccountStatus.FINISHED)
+        if (status == Status)
         {
-            throw new DelTeachingException("A conta já está finalizada.", "ACCOUNT_ALREADY_FINISHED");
+            throw new DelTeachingException("A conta já está no status solicitado.");
         }
 
-        Status = EBankAccountStatus.FINISHED;
+        Status = status;
     }
-
-    public void Block()
+    public void SetBranch(string branch)
     {
-        if (Status == EBankAccountStatus.BLOCKED || Status == EBankAccountStatus.FINISHED)
+        if (branch.Length > 5)
         {
-            throw new DelTeachingException("A conta já está bloqueada ou cancelada.", "ACCOUNT_ALREADY_BLOCKED_OR_CANCELED");
+            throw new DelTeachingException("Agencia deve ter no maximo 5 numeros", "");
         }
-
-        Status = EBankAccountStatus.BLOCKED;
+        if (!Regex.IsMatch(branch, @"^\d+$"))
+        {
+            throw new DelTeachingException("Agência deve conter apenas números", "INVALID_BRANCH_FORMAT");
+        }
+        Branch = branch;
     }
 }
